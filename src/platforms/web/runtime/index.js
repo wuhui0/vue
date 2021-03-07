@@ -1,5 +1,6 @@
 /* @flow */
 
+// 该文件都是和平台相关的
 import Vue from 'core/index'
 import config from 'core/config'
 import { extend, noop } from 'shared/util'
@@ -20,16 +21,20 @@ import platformDirectives from './directives/index'
 import platformComponents from './components/index'
 
 // install platform specific utils
+// 判断是否是关键属性（表单元素的 input/checked/selected/muted）
+// 如果是这些属性，设置el.props属性（属性不设置到标签上）
 Vue.config.mustUseProp = mustUseProp
 Vue.config.isReservedTag = isReservedTag
 Vue.config.isReservedAttr = isReservedAttr
 Vue.config.getTagNamespace = getTagNamespace
 Vue.config.isUnknownElement = isUnknownElement
 
+// 这里注册了平台相关的一些指令与组件
 // install platform runtime directives & components
 extend(Vue.options.directives, platformDirectives)
 extend(Vue.options.components, platformComponents)
 
+// 注册了__patch__ 和$mount 这两个方法
 // install platform patch function
 Vue.prototype.__patch__ = inBrowser ? patch : noop
 

@@ -111,6 +111,8 @@ function initProps (vm: Component, propsOptions: Object) {
 
 function initData (vm: Component) {
   let data = vm.$options.data
+  // 初始化_data 组件中data是函数，调用函数返回结果
+  // 否则直接返回data
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
@@ -123,10 +125,12 @@ function initData (vm: Component) {
     )
   }
   // proxy data on instance
+  // 获取data中的所有属性
   const keys = Object.keys(data)
   const props = vm.$options.props
   const methods = vm.$options.methods
   let i = keys.length
+  // 判断 data上的成员是否和 props/methods重名
   while (i--) {
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
@@ -144,10 +148,11 @@ function initData (vm: Component) {
         vm
       )
     } else if (!isReserved(key)) {
-      proxy(vm, `_data`, key)
+      proxy(vm, `_data`, key) // 把当前的key注入到vue实例中来
     }
   }
   // observe data
+  // 响应式处理
   observe(data, true /* asRootData */)
 }
 

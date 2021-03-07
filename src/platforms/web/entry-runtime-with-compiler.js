@@ -15,10 +15,11 @@ const idToTemplate = cached(id => {
 })
 
 const mount = Vue.prototype.$mount
-Vue.prototype.$mount = function (
+Vue.prototype.$mount = function ( // 把生成的dom挂载到页面上来
   el?: string | Element,
   hydrating?: boolean
 ): Component {
+  // el 创建实例的时候传过来的选项
   el = el && query(el)
 
   /* istanbul ignore if */
@@ -31,6 +32,7 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+  // 把template转换成render函数
   if (!options.render) {
     let template = options.template
     if (template) {
@@ -79,6 +81,7 @@ Vue.prototype.$mount = function (
       }
     }
   }
+  // 调用mount方法 渲染DOM
   return mount.call(this, el, hydrating)
 }
 

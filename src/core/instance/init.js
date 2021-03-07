@@ -13,6 +13,7 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
+  // 给vue实例增加_init方法
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
@@ -27,6 +28,7 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     // a flag to avoid this being observed
+    // 如果是vue实例不需要被observe
     vm._isVue = true
     // merge options
     if (options && options._isComponent) {
@@ -49,13 +51,22 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
+    // vm的生命周期相关变量初始化
     initLifecycle(vm)
+    // vm的事件监听初始化，父组件绑定在当前组件上的事件
     initEvents(vm)
+    // vm的编译render初始化
+    // $slot/$scopedSlots/_c/$createElement/$attrs/$listeners
     initRender(vm)
+  // beforeCreate生命钩子的回调
     callHook(vm, 'beforeCreate')
+      // 把inject的成员注入到vm上
     initInjections(vm) // resolve injections before data/props
+    // 初始化vm的 _props/methods/_data/computed/watch
     initState(vm)
+    // 初始化provide
     initProvide(vm) // resolve provide after data/props
+    // created生命钩子回调
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -64,7 +75,7 @@ export function initMixin (Vue: Class<Component>) {
       mark(endTag)
       measure(`vue ${vm._name} init`, startTag, endTag)
     }
-
+// 调用 $mount() 挂载
     if (vm.$options.el) {
       vm.$mount(vm.$options.el)
     }

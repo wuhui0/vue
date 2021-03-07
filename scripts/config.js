@@ -1,3 +1,5 @@
+// 该文件是基于node的一个模块
+
 const path = require('path')
 const buble = require('rollup-plugin-buble')
 const alias = require('rollup-plugin-alias')
@@ -262,9 +264,9 @@ function genConfig (name) {
 
   return config
 }
-
+// 判断环境变量是否有TARGET
 if (process.env.TARGET) {
-  module.exports = genConfig(process.env.TARGET)
+  module.exports = genConfig(process.env.TARGET) // 生成rollup配置文件
 } else {
   exports.getBuild = genConfig
   exports.getAllBuilds = () => Object.keys(builds).map(genConfig)

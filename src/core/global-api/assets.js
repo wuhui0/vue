@@ -7,6 +7,8 @@ export function initAssetRegisters (Vue: GlobalAPI) {
   /**
    * Create asset registration methods.
    */
+  // 遍历ASSET_TYPES为Vue定义相应方法
+  // ASSET_TYPES包括了directive\component\filter
   ASSET_TYPES.forEach(type => {
     Vue[type] = function (
       id: string,
